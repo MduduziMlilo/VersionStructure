@@ -18,4 +18,15 @@
       </Content>
     </ItemGroup>
 
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <_CustomFiles Include="./../.gitstuff/hooks/commit-msg" />
+            <_CustomFiles Include="./../.gitstuff/hooks/pre-push" />
+        </ItemGroup>
+        <Copy SourceFiles="@(_CustomFiles)" DestinationFolder="./../.git/hooks" />
+        <!-- Set the executable flag for the file on Unix systems -->
+        <Exec Condition="'$(OS)' == 'Unix'" Command="chmod +x './../.git/hooks/commit-msg'" />
+        <Exec Condition="'$(OS)' == 'Unix'" Command="chmod +x './../.git/hooks/pre-push'" />
+    </Target>
+
 </Project>
